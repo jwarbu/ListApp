@@ -1,3 +1,4 @@
+package javathehut;
 import java.util.Scanner;
 
 

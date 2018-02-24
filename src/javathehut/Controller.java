@@ -1,4 +1,4 @@
-package sample;
+package javathehut;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

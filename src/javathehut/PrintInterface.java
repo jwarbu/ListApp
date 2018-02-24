@@ -1,3 +1,4 @@
+package javathehut;
 
 public interface PrintInterface
 {

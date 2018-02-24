@@ -1,0 +1,100 @@
+package javathehut;
+
+import HW5.Inventory;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class con_ss implements Initializable{
+
+    @FXML private TableView tbl_catalog;
+    @FXML private TableView tbl_cart;
+    public List<InventoryItem> cartHistory = new ArrayList<>();
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
+        ManageInventory currentInventory = new ManageInventory();
+        //final TableView<InventoryItem> tbl_catalog = new TableView<>();
+
+
+        TableColumn<InventoryItem, String> prodNameCol = new TableColumn<>("Product Name");
+        prodNameCol.setCellValueFactory(new PropertyValueFactory("prodName"));
+
+        TableColumn<InventoryItem, Double> prodPriceCol = new TableColumn<>("Price");
+        prodPriceCol.setCellValueFactory(new PropertyValueFactory("prodPrice"));
+
+        TableColumn catQtyCol = new TableColumn<>("Qty");
+        catQtyCol.setSortable(false);
+
+        catQtyCol.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<InventoryItem, Boolean>, ObservableValue<Boolean>>(){
+                    @Override public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<InventoryItem, Boolean> features)
+                    {
+                        return new SimpleBooleanProperty(features.getValue() != null);
+                    }
+                });
+        catQtyCol.setCellFactory(
+                new Callback<TableColumn<InventoryItem, Boolean>, TableCell<InventoryItem, Boolean>>(){
+                    @Override
+                    public TableCell<InventoryItem, Boolean> call(TableColumn<InventoryItem, Boolean> inventoryItemBooleanTableColumn)
+                    {
+                        return new AddItemCell(tbl_catalog, tbl_cart, "text");
+                    }
+                });
+        catQtyCol.setPrefWidth(50);
+
+        TableColumn<InventoryItem, Boolean> addBtnCol = new TableColumn<>("Add");
+        addBtnCol.setSortable(false);
+
+        addBtnCol.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<InventoryItem, Boolean>, ObservableValue<Boolean>>(){
+                    @Override public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<InventoryItem, Boolean> features)
+                        {
+                            return new SimpleBooleanProperty(features.getValue() != null);
+                        }
+                });
+        addBtnCol.setCellFactory(
+                new Callback<TableColumn<InventoryItem, Boolean>, TableCell<InventoryItem, Boolean>>(){
+                    @Override
+                    public TableCell<InventoryItem, Boolean> call(TableColumn<InventoryItem, Boolean> inventoryItemBooleanTableColumn)
+                        {
+                            return new AddItemCell(tbl_catalog, tbl_cart, "button");
+                        }
+                });
+
+
+        tbl_catalog.setItems(currentInventory.getInventory());
+        tbl_catalog.getColumns().setAll(prodNameCol, prodPriceCol, catQtyCol, addBtnCol);
+
+
+        TableColumn<InventoryItem, String> cartNameCol = new TableColumn<>("Product Name");
+        cartNameCol.setCellValueFactory(new PropertyValueFactory("prodName"));
+
+        TableColumn<InventoryItem, Integer> cartQtyCol = new TableColumn<>("Qty");
+        cartQtyCol.setCellValueFactory(new PropertyValueFactory("qty"));
+
+        TableColumn<InventoryItem, Double> cartPriceCol = new TableColumn<>("Price");
+        cartPriceCol.setCellValueFactory(new PropertyValueFactory("prodPrice"));
+
+
+        tbl_cart.setItems(FXCollections.observableList(cartHistory));
+        tbl_cart.getColumns().setAll(cartNameCol, cartQtyCol, cartPriceCol);
+    }
+
+}

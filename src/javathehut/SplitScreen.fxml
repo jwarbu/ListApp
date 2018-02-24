@@ -7,30 +7,35 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.con_ss">
+<GridPane fx:id="g_pane" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javathehut.con_ss">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.0" minWidth="10.0" prefWidth="132.0" />
+      <ColumnConstraints hgrow="SOMETIMES" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="419.0" minWidth="10.0" prefWidth="317.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="351.0" minWidth="10.0" prefWidth="351.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="78.0" minHeight="0.0" prefHeight="22.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="504.0" minHeight="10.0" prefHeight="482.0" vgrow="SOMETIMES" />
+    <RowConstraints vgrow="SOMETIMES" />
     <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="32.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <TableView fx:id="tbl_cart" GridPane.columnIndex="2" GridPane.rowIndex="1">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <TableView fx:id="tbl_catalog" minHeight="-Infinity" minWidth="-Infinity" prefHeight="244.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+
+      <TableView fx:id="tbl_catalog" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn minWidth="100.0" prefWidth="100.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
       </TableView>
+       
       <Label alignment="CENTER" prefHeight="34.0" prefWidth="211.0" text="Catalog" GridPane.columnIndex="1" />
       <Label alignment="CENTER" prefHeight="33.0" prefWidth="207.0" text="Shopping Cart" GridPane.columnIndex="2" />
    </children>

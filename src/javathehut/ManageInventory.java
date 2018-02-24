@@ -1,6 +1,5 @@
-package sample;
+package javathehut;
 
-import HW5.Inventory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

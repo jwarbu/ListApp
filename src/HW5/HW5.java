@@ -1,4 +1,4 @@
-/**package sample;
+/**package javathehut;
 
 import java.util.Scanner;
 
