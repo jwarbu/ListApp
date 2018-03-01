@@ -14,11 +14,10 @@ import java.util.List;
 public class AddItemCell extends TableCell<InventoryItem, Boolean>
 {
     final Button addButton = new Button("Add");
-    final TextField addTextField = new TextField("1");
     final StackPane paddedButton = new StackPane();
 
 
-    AddItemCell(TableView tbl_cat, final TableView tbl_cart)
+    AddItemCell(TableView tbl_cat, TableView tbl_cart)
     {
         paddedButton.setPadding(new Insets(3));
         paddedButton.getChildren().add(addButton);
@@ -26,14 +25,31 @@ public class AddItemCell extends TableCell<InventoryItem, Boolean>
             @Override
             public void handle(ActionEvent actionEvent) {
                 InventoryItem item = getTableView().getItems().get(getIndex());
-                InventoryItem new_item = new InventoryItem();
-                new_item.copy(item);
-                new_item.setQuantity(Integer.parseInt(item.getTextField().getText()));
-                tbl_cart.getItems().add(new_item);
+
+                String user_input = item.getTextField().getText();
+                if(InputChecker.isInt(user_input) && !user_input.equalsIgnoreCase("0"))
+                {
+                    int new_qty = Integer.parseInt(user_input);
+
+                    InventoryItem new_item = new InventoryItem();
+                    new_item.copy(item);
+                    new_item.setQuantity(new_qty);
+
+                    if(ManageCart.isDuplicate(tbl_cart.getItems(), new_item))
+                    {
+                        System.out.println("is a dupe");
+
+                        tbl_cart.setItems(ManageCart.addToExisting(tbl_cart.getItems(), new_item));
+                    }
+                    else
+                    {
+                        new_item.calcPrice();
+                        tbl_cart.getItems().add(new_item);
+                    }
+                }
+
             }
         });
-
-
     }
 
     @Override

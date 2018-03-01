@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
+import javax.swing.*;
 import javax.xml.soap.Text;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,17 +25,34 @@ public class con_ss implements Initializable{
 
     @FXML private TableView tbl_catalog;
     @FXML private TableView tbl_cart;
+    @FXML private Label lb_current_budget;
+    @FXML private TextField tf_budget;
+
     public List<InventoryItem> cartHistory = new ArrayList<>();
     public List<InventoryItem> cart = new ArrayList<>();
+    public Budget totalBudget = new Budget(0);
 
+    public void handleBudgetButtonAction(ActionEvent e)
+    {
+        String user_budget = InputChecker.stripForMoney(tf_budget.getText());
+        if(user_budget.equals("")) //input was alpha characters only
+        {
+            totalBudget.setBudget(0);
+        }
+        else
+        {
+            totalBudget.setBudget(Double.parseDouble(user_budget));
+            lb_current_budget.setText(totalBudget.getStringBudget());
+        }
+    }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         ManageInventory currentInventory = new ManageInventory();
-        //final TableView<InventoryItem> tbl_catalog = new TableView<>();
-
+        Budget shoppingBudget = new Budget(0);
+        lb_current_budget.setText(shoppingBudget.getStringBudget());
 
         TableColumn<InventoryItem, String> prodNameCol = new TableColumn<>("Product Name");
         prodNameCol.setCellValueFactory(new PropertyValueFactory("prodName"));
@@ -49,7 +67,6 @@ public class con_ss implements Initializable{
 
         TableColumn<InventoryItem, Boolean> addBtnCol = new TableColumn<>("Add");
         addBtnCol.setSortable(false);
-
         addBtnCol.setCellValueFactory(
                 new Callback<TableColumn.CellDataFeatures<InventoryItem, Boolean>, ObservableValue<Boolean>>(){
                     @Override public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<InventoryItem, Boolean> features)
@@ -73,16 +90,48 @@ public class con_ss implements Initializable{
 
         TableColumn<InventoryItem, String> cartNameCol = new TableColumn<>("Product Name");
         cartNameCol.setCellValueFactory(new PropertyValueFactory("prodName"));
+        cartNameCol.setMinWidth(75);
 
+/**
         TableColumn<InventoryItem, Integer> cartQtyCol = new TableColumn<>("Qty");
         cartQtyCol.setCellValueFactory(new PropertyValueFactory("quantity"));
+ */
 
-        TableColumn<InventoryItem, Double> cartPriceCol = new TableColumn<>("Price");
-        cartPriceCol.setCellValueFactory(new PropertyValueFactory("prodPrice"));
+        TableColumn<InventoryItem, TextField> cartQtyCol = new TableColumn<>("Qty");
+        cartQtyCol.setCellValueFactory(new PropertyValueFactory("tfQty"));
+        cartQtyCol.setSortable(false);
+        cartQtyCol.setPrefWidth(50);
+
+        TableColumn<InventoryItem, Boolean> editCartCol = new TableColumn<>("Update");
+        editCartCol.setSortable(false);
+        editCartCol.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<InventoryItem, Boolean>, ObservableValue<Boolean>>(){
+                    @Override public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<InventoryItem, Boolean> features)
+                    {
+                        return new SimpleBooleanProperty(features.getValue() != null);
+                    }
+                });
+        editCartCol.setCellFactory(
+                new Callback<TableColumn<InventoryItem, Boolean>, TableCell<InventoryItem, Boolean>>(){
+                    @Override
+                    public TableCell<InventoryItem, Boolean> call(TableColumn<InventoryItem, Boolean> inventoryItemBooleanTableColumn)
+                    {
+                        return new EditCartCell(tbl_catalog, tbl_cart);
+                    }
+                });
+
+
+        TableColumn<InventoryItem, Double> cartPriceCol = new TableColumn<>("Total Price");
+        cartPriceCol.setCellValueFactory(new PropertyValueFactory("total"));
+
+        TableColumn<InventoryItem, TextField> cartPriorityCol = new TableColumn<>("Priority");
+        cartPriorityCol.setCellValueFactory(new PropertyValueFactory("tfPriority"));
+        cartPriorityCol.setSortable(true);
+        cartPriorityCol.setPrefWidth(50);
 
 
         tbl_cart.setItems(FXCollections.observableList(cartHistory));
-        tbl_cart.getColumns().setAll(cartNameCol, cartQtyCol, cartPriceCol);
+        tbl_cart.getColumns().setAll(cartPriorityCol, cartNameCol, cartQtyCol, cartPriceCol, editCartCol);
     }
 
 }

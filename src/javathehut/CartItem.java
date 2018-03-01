@@ -3,44 +3,45 @@ package javathehut;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 
-public class InventoryItem extends Product
+
+public class CartItem extends Product
+
 {
     private SimpleIntegerProperty quantity = new SimpleIntegerProperty();
     private SimpleDoubleProperty total = new SimpleDoubleProperty();
-    private TextField textField;
+    private String qtyText = "";
     private TextField tfQty;
     private TextField tfPriority;
+    //private Spinner spinQty = new Spinner();
 
 
     // Default Constructor
-    public InventoryItem()
+    public CartItem()
     {
         super();
         this.quantity.set(0);
         this.total.set(super.getProdPrice());
-        this.textField = new TextField("1");
-        this.tfQty = new TextField("0");
-        this.tfPriority = new TextField("1");
-
+        this.tfQty.setText(Integer.toString(quantity.getValue()));
+        //this.spinQty = new Spinner<Integer>(0, Integer.MAX_VALUE, 0);
     }
 
-    public InventoryItem(String inName, int inNumber, double inPrice)
+    public CartItem(String inName, int inNumber, double inPrice)
     {
         super(inName, inNumber, inPrice);
         this.quantity.set(0);
         this.total.set(inPrice);
-        this.textField = new TextField("1");
-        this.tfQty = new TextField("0");
-        this.tfPriority = new TextField("1");
+        this.tfQty.setText(Integer.toString(quantity.getValue()));
 
+        //this.spinQty = new Spinner<Integer>(0, Integer.MAX_VALUE, 0);
     }
 
-// Property Methods
+    // Property Methods
     public SimpleIntegerProperty quantityProperty() {
-    return quantity;
-}
+        return quantity;
+    }
 
     public double getTotal() {
         return total.get();
@@ -66,49 +67,43 @@ public class InventoryItem extends Product
 
     }
 
-// Other Methods
+    // Other Methods
     public void calcPrice()
     {
         setTotal(getQuantity() * getProdPrice());
     }
 
-// Getters and Setters
+    // Getters and Setters
     public String getLabel()
     {
         return super.getProdName() + " ($" + super.getProdPrice() + ")";
     }
 
+
     public int getQuantity() {
         return quantity.get();
     }
 
-    public void setQuantity(int i) {
-        this.quantity.set(i);
-        this.tfQty.setText(Integer.toString(i));
-        this.calcPrice();
+    public void setQuantity(int quantity) {
+        this.quantity.set(quantity);
+        //this.spinQty.getValueFactory().setValue(quantity);
     }
 
-    public TextField getTextField() {
-        return textField;
+
+    public String getQtyText() {
+        return qtyText;
     }
 
-    public void setTextField(TextField textField) {
-        this.textField = textField;
+    public void setQtyText(String qtyText) {
+        this.qtyText = qtyText;
     }
+
 
     public TextField getTfQty() {
         return tfQty;
     }
 
-    public void setTfQty(int i) {
-        this.tfQty.setText(Integer.toString(i));
-    }
-
-    public TextField getTfPriority() {
-        return tfPriority;
-    }
-
-    public void setTfPriority(TextField tfPriority) {
-        this.tfPriority = tfPriority;
+    public void setTfQty(TextField tfQty) {
+        this.tfQty = tfQty;
     }
 }

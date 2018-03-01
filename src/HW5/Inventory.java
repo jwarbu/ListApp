@@ -1,5 +1,7 @@
 package HW5;
 
+import javathehut.InputChecker;
+
 import java.util.Scanner;
 
 public class Inventory

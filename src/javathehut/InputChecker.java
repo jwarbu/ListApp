@@ -1,41 +1,46 @@
 
-package HW5;
+package javathehut;
 // used in most received inputs
 
 public class InputChecker
 {
 
-    public Boolean isAlpha(String userInput)
+    public static Boolean isAlpha(String userInput)
     {
         return userInput.matches("[a-zA-Z]+");
     }
 
-    public String stripNum(String userInput)
+    public static Boolean isInt(String userInput)
+    {
+        return userInput.matches("[0-9]+");
+    }
+
+    public static String stripNum(String userInput)
     {
         return userInput.replaceAll("[0-9]", "");
     }
 
-    public String stripSpecial(String userInput)
+    public static String stripSpecial(String userInput)
     {
         return userInput.replaceAll("[^a-zA-Z0-9]+", "");
     }
 
-    public String stripNonalpha(String userInput)
+    public static String stripNonalpha(String userInput)
     {
         return userInput.replaceAll("[^a-zA-Z]+", "");
     }
 
-    public String stripForMoney(String userInput)
+    public static String stripForMoney(String userInput)
     {
         return userInput.replaceAll("[^0-9.]+", "");
     }
 
-    public String stripAlpha(String userInput)
+    public static String stripAlpha(String userInput)
     {
         return userInput.replaceAll("[a-zA-Z]+", "");
     }
 
-    public String stripNonNum(String userInput)
+    public static String stripNonNum(String userInput)
     {
         return userInput.replaceAll("[^0-9]+", "");
     }
